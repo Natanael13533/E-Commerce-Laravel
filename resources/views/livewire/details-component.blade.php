@@ -1,9 +1,46 @@
 <div>
+    <style>
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+        .rate:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+        }
+        .rate:not(:checked) > label {
+            float:right;
+            width:1em;
+            overflow:hidden;
+            white-space:nowrap;
+            cursor:pointer;
+            font-size:30px;
+            color:#ccc;
+        }
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+        .rate > input:checked ~ label {
+            color: #ffc700;
+        }
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217;
+        }
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08;
+        }
+    </style>
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
+                    <a href="{{route('home.index')}}" rel="nofollow">Home</a>
                     <span></span> Fashion
                     <span></span> Abstract Print Patchwork Dress
                 </div>
@@ -20,37 +57,21 @@
                                         <span class="zoom-icon"><i class="fi-rs-search"></i></span>
                                         <!-- MAIN SLIDES -->
                                         <div class="product-image-slider">
-                                            <figure class="border-radius-10">
-                                                <img src="{{ asset('assets/imgs/shop/product-') }}{{$product->id}}-2.jpg" alt="product image">
-                                            </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="{{ asset('assets/imgs/shop/product-16-1.jpg') }}" alt="product image">
-                                            </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="{{ asset('assets/imgs/shop/product-16-3.jpg') }}" alt="product image">
-                                            </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="{{ asset('assets/imgs/shop/product-16-4.jpg') }}" alt="product image">
-                                            </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="{{ asset('assets/imgs/shop/product-16-5.jpg') }}" alt="product image">
-                                            </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="{{ asset('assets/imgs/shop/product-16-6.jpg') }}" alt="product image">
-                                            </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="{{ asset('assets/imgs/shop/product-16-7.jpg') }}" alt="product image">
-                                            </figure>
+                                            @php
+                                                $images = App\Models\ProductImages::where('product_slug', $product->slug)->get();
+                                            @endphp
+
+                                            @foreach ($images as $item)
+                                                <figure wire:key="lang{{$item->id}}" class="border-radius-10">
+                                                    <img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
+                                                </figure>
+                                            @endforeach
                                         </div>
                                         <!-- THUMBNAILS -->
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
-                                            <div><img src="{{ asset('assets/imgs/shop/thumbnail-3.jpg') }}" alt="product image"></div>
-                                            <div><img src="{{ asset('assets/imgs/shop/thumbnail-4.jpg') }}" alt="product image"></div>
-                                            <div><img src="{{ asset('assets/imgs/shop/thumbnail-5.jpg') }}" alt="product image"></div>
-                                            <div><img src="{{ asset('assets/imgs/shop/thumbnail-6.jpg') }}" alt="product image"></div>
-                                            <div><img src="{{ asset('assets/imgs/shop/thumbnail-7.jpg') }}" alt="product image"></div>
-                                            <div><img src="{{ asset('assets/imgs/shop/thumbnail-8.jpg') }}" alt="product image"></div>
-                                            <div><img src="{{ asset('assets/imgs/shop/thumbnail-9.jpg') }}" alt="product image"></div>
+                                            @foreach ($images as $item)
+                                                <div wire:key="lang{{$item->id}}"><img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}"></div>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <!-- End Gallery -->
@@ -150,7 +171,7 @@
                                         <a class="nav-link" id="Additional-info-tab" data-bs-toggle="tab" href="#Additional-info">Additional info</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Reviews (3)</a>
+                                        <a class="nav-link" id="Reviews-tab" data-bs-toggle="tab" href="#Reviews">Reviews</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content shop_info_tab entry-main-content">
@@ -351,7 +372,7 @@
                                                         <!--single-comment -->
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4">
+                                                {{-- <div class="col-lg-4">
                                                     <h4 class="mb-30">Customer reviews</h4>
                                                     <div class="d-flex mb-30">
                                                         <div class="product-rate d-inline-block mr-15">
@@ -381,42 +402,62 @@
                                                         <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85%</div>
                                                     </div>
                                                     <a href="#" class="font-xs text-muted">How are ratings calculated?</a>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                         <!--comment form-->
                                         <div class="comment-form">
+                                            @if (Session::has('message'))
+                                                <div class="alert alert-success" role="alert">{{Session::get('message')}}</div>
+                                            @endif
                                             <h4 class="mb-15">Add a review</h4>
-                                            <div class="product-rate d-inline-block mb-30">
-                                            </div>
+                                            {{-- <div class="product-rate d-inline-block mb-30">
+                                            </div> --}}
                                             <div class="row">
                                                 <div class="col-lg-8 col-md-12">
-                                                    <form class="form-contact comment_form" action="#" id="commentForm">
+                                                    <form wire:submit.prevent="addComment">
                                                         <div class="row">
-                                                            <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
-                                                                </div>
+                                                            <div class="rate form-group col-sm-4">
+                                                                <input type="radio" id="star5" name="rate" value="5" wire:model="rating"/>
+                                                                <label for="star5" title="text">5 stars</label>
+                                                                <input type="radio" id="star4" name="rate" value="4" wire:model="rating"/>
+                                                                <label for="star4" title="text">4 stars</label>
+                                                                <input type="radio" id="star3" name="rate" value="3" wire:model="rating"/>
+                                                                <label for="star3" title="text">3 stars</label>
+                                                                <input type="radio" id="star2" name="rate" value="2" wire:model="rating"/>
+                                                                <label for="star2" title="text">2 stars</label>
+                                                                <input type="radio" id="star1" name="rate" value="1" wire:model="rating"/>
+                                                                <label for="star1" title="text">1 star</label>
+                                                                {{-- @error('rating')
+                                                                    <p class="text-danger">{{$message}}</p>
+                                                                @enderror --}}
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="name" id="name" type="text" placeholder="Name">
-                                                                </div>
+                                                            <div class="form-group col-12">
+                                                                <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment" wire:model="comments"></textarea>
+                                                                {{-- @error('comments')
+                                                                    <p class="text-danger">{{$message}}</p>
+                                                                @enderror --}}
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="email" id="email" type="email" placeholder="Email">
-                                                                </div>
+                                                            {{-- <div class="form-group col-sm-6">
+                                                                <input class="form-control" name="name" id="name" type="text" placeholder="Name" wire:model="name">
+                                                                @error('name')
+                                                                    <p class="text-danger">{{$message}}</p>
+                                                                @enderror
                                                             </div>
-                                                            <div class="col-12">
+                                                            <div class="form-group col-sm-6">
+                                                                <input class="form-control" name="email" id="email" type="email" placeholder="Email" wire:model="email">
+                                                                @error('email')
+                                                                    <p class="text-danger">{{$message}}</p>
+                                                                @enderror
+                                                            </div> --}}
+                                                            {{-- <div class="col-12">
                                                                 <div class="form-group">
                                                                     <input class="form-control" name="website" id="website" type="text" placeholder="Website">
                                                                 </div>
-                                                            </div>
+                                                            </div> --}}
                                                         </div>
                                                         <div class="form-group">
-                                                            <button type="submit" class="button button-contactForm">Submit
-                                                                Review</button>
+                                                            <button type="submit" class="button button-contactForm">Submit Review</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -432,13 +473,22 @@
                                 <div class="col-12">
                                     <div class="row related-products">
                                         @foreach ($rproducts as $rproduct)
-                                        <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                                        <div wire:key="lang{{$rproduct->id}}" class="col-lg-3 col-md-4 col-12 col-sm-6">
                                             <div class="product-cart-wrap small hover-up">
                                                 <div class="product-img-action-wrap">
                                                     <div class="product-img product-img-zoom">
                                                         <a href="{{route('product.details', ['slug' => $rproduct->slug])}}" tabindex="0">
-                                                            <img class="default-img" src="{{ asset('assets/imgs/shop/product-') }}{{$rproduct->id}}-1.jpg" alt="{{$rproduct->name}}">
-                                                            <img class="hover-img" src="{{ asset('assets/imgs/shop/product-') }}{{$rproduct->id}}-2.jpg" alt="{{$rproduct->name}}">
+                                                            @php
+                                                                $imageFirst = App\Models\ProductImages::where('product_slug', $rproduct->slug)->take(1)->get();
+                                                                $imageSecond = App\Models\ProductImages::where('product_slug', $rproduct->slug)->skip(1)->take(1)->get();
+                                                            @endphp
+
+                                                            @foreach ($imageFirst as $item)
+                                                                <img wire:key="lang{{$item->id}}" class="default-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
+                                                            @endforeach
+                                                            @foreach ($imageSecond as $item)
+                                                                <img wire:key="lang{{$item->id}}" class="hover-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
+                                                            @endforeach
                                                         </a>
                                                     </div>
                                                     <div class="product-action-1">
@@ -533,9 +583,14 @@
                                 <div class="bt-1 border-color-1"></div>
                             </div>
                             @foreach ($nproducts as $nproduct)
-                            <div class="single-post clearfix">
+                            <div wire:key="lang{{$nproduct->id}}" class="single-post clearfix">
                                 <div class="image">
-                                    <img src="{{ asset('assets/imgs/shop/product-') }}{{$nproduct->id}}-1.jpg" alt="{{$nproduct->name}}">
+                                    @php
+                                        $image = App\Models\ProductImages::where('product_slug', $nproduct->slug)->take(1)->get();
+                                    @endphp
+                                    @foreach ($image as $item)
+                                        <img wire:key="lang{{$item->id}}" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
+                                    @endforeach
                                 </div>
                                 <div class="content pt-10">
                                     <h5><a href="{{route('product.details', ['slug' => $nproduct->slug])}}">{{$nproduct->name}}</a></h5>

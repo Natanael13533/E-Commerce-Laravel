@@ -14,6 +14,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/imgs/theme/favicon.ico') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 @livewireStyles
 </head>
 
@@ -72,22 +73,13 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="index.html"><img src="assets/imgs/logo/logo.png" alt="logo"></a>
+                        <a href="{{route('home.index')}}"><img src="{{asset('assets/imgs/logo/logo.png')}}" alt="logo"></a>
                     </div>
                     <div class="header-right">
-                        <div class="search-style-1">
-                            <form action="#">
-                                <input type="text" placeholder="Search for items...">
-                            </form>
-                        </div>
+                        @livewire('header-search-component')
                         <div class="header-action-right">
                             <div class="header-action-2">
-                                <div class="header-action-icon-2">
-                                    <a href="shop-wishlist.php">
-                                        <img class="svgInject" alt="Surfside Media" src="assets/imgs/theme/icons/icon-heart.svg">
-                                        <span class="pro-count blue">4</span>
-                                    </a>
-                                </div>
+                                @livewire('wishlist-icon-component')
                                 @livewire('cart-icon-component')
                             </div>
                         </div>
@@ -99,7 +91,7 @@
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
                     <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="index.html"><img src="assets/imgs/logo/logo.png" alt="logo"></a>
+                        <a href="{{route('home.index')}}"><img src="{{asset('assets/imgs/logo/logo.png')}}" alt="logo"></a>
                     </div>
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-categori-wrap d-none d-lg-block">
@@ -115,16 +107,14 @@
                                                 <li class="mega-menu-col col-lg-7">
                                                     <ul class="d-lg-flex">
                                                         <li class="mega-menu-col col-lg-6">
+                                                            @php
+                                                                $categories = App\Models\Category::orderBy('name', 'ASC')->get();
+                                                            @endphp
                                                             <ul>
                                                                 <li><span class="submenu-title">Hot & Trending</span></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Dresses</a></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Blouses & Shirts</a></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Hoodies & Sweatshirts</a></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Women's Sets</a></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Suits & Blazers</a></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Bodysuits</a></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Tanks & Camis</a></li>
-                                                                <li><a class="dropdown-item nav-link nav_item" href="#">Coats & Jackets</a></li>
+                                                                @foreach ($categories as $category)
+                                                                    <li><a class="dropdown-item nav-link nav_item" href="#">{{$category->name}}</a></li>
+                                                                @endforeach
                                                             </ul>
                                                         </li>
                                                         <li class="mega-menu-col col-lg-6">
@@ -287,22 +277,22 @@
                             <nav>
                                 <ul>
                                     <li><a class="active" href="/">Home </a></li>
-                                    <li><a href="about.html">About</a></li>
+                                    <li><a href="{{route('about')}}">About</a></li>
                                     <li><a href="{{route('shop')}}">Shop</a></li>
                                     <li class="position-static"><a href="#">Our Collections <i class="fi-rs-angle-down"></i></a>
                                         <ul class="mega-menu">
                                             <li class="sub-mega-menu sub-mega-menu-width-22">
-                                                <a class="menu-title" href="#">Women's Fashion</a>
+                                                <a class="menu-title" href="#">Fashion</a>
+                                                @php
+                                                    $categories = App\Models\Category::orderBy('name', 'ASC')->get();
+                                                @endphp
                                                 <ul>
-                                                    <li><a href="product-details.html">Dresses</a></li>
-                                                    <li><a href="product-details.html">Blouses & Shirts</a></li>
-                                                    <li><a href="product-details.html">Hoodies & Sweatshirts</a></li>
-                                                    <li><a href="product-details.html">Wedding Dresses</a></li>
-                                                    <li><a href="product-details.html">Prom Dresses</a></li>
-                                                    <li><a href="product-details.html">Cosplay Costumes</a></li>
+                                                    @foreach ($categories as $category)
+                                                        <li><a href="{{route('product.category', ['slug' => $category->slug])}}">{{$category->name}}</a></li>
+                                                    @endforeach
                                                 </ul>
                                             </li>
-                                            <li class="sub-mega-menu sub-mega-menu-width-22">
+                                            {{-- <li class="sub-mega-menu sub-mega-menu-width-22">
                                                 <a class="menu-title" href="#">Men's Fashion</a>
                                                 <ul>
                                                     <li><a href="product-details.html">Jackets</a></li>
@@ -312,7 +302,7 @@
                                                     <li><a href="product-details.html">Sweatpants</a></li>
                                                     <li><a href="product-details.html">Harem Pants</a></li>
                                                 </ul>
-                                            </li>
+                                            </li> --}}
                                             <li class="sub-mega-menu sub-mega-menu-width-22">
                                                 <a class="menu-title" href="#">Technology</a>
                                                 <ul>
@@ -348,13 +338,14 @@
                                     </li>
                                     <li><a href="blog.html">Blog </a></li>
                                     <li><a href="contact.html">Contact</a></li>
-                                    <li><a href="#">My Account<i class="fi-rs-angle-down"></i></a>
-                                        @auth
+                                    @auth
+                                        <li><a href="#">My Account<i class="fi-rs-angle-down"></i></a>
                                             @if (Auth::user()->utype == 'ADM')
                                                 <ul class="sub-menu">
                                                     <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                                    <li><a href="#">Products</a></li>
-                                                    <li><a href="#">Categories</a></li>
+                                                    <li><a href="{{route('admin.products')}}">Products</a></li>
+                                                    <li><a href="{{route('admin.categories')}}">Categories</a></li>
+                                                    <li><a href="{{route('admin.home.slider')}}">Manage Slider</a></li>
                                                     <li><a href="#">Coupons</a></li>
                                                     <li><a href="#">Orders</a></li>
                                                     <li><a href="#">Customers</a></li>
@@ -362,10 +353,12 @@
                                             @else
                                                 <ul class="sub-menu">
                                                     <li><a href="{{ route('user.dashboard') }}">Dashboard</a></li>
+                                                    <li><a href="{{ route('user.profile') }}">Profile</a></li>
+                                                    <li><a href="{{ route('user.comment') }}">Profile</a></li>
                                                 </ul>
                                             @endif
-                                        @endif
-                                    </li>
+                                        </li>
+                                    @endif
                                 </ul>
                             </nav>
                         </div>
@@ -687,6 +680,7 @@
 <script src="{{ asset('assets/js/main.js?v=3.3') }}"></script>
 <script src="{{ asset('assets/js/shop.js?v=3.3') }}"></script>
 @livewireScripts
+@stack('scripts')
 </body>
 
 </html>

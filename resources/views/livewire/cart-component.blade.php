@@ -15,11 +15,11 @@
                     <div class="col-12">
                         <div class="table-responsive">
                             @if (Session::has('success_message'))
-                                        <div class="alert alert-success">
-                                            <strong>Success | {{Session::get('success_message')}}</strong>
-                                        </div>
+                                <div class="alert alert-success">
+                                    <strong>Success | {{Session::get('success_message')}}</strong>
+                                </div>
                             @endif
-                            @if (Cart::count() > 0)
+                            @if (Cart::instance('cart')->count() > 0)
                             <table class="table shopping-summery text-center clean">
                                 <thead>
                                     <tr class="main-heading">
@@ -32,9 +32,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (Cart::content() as $item)
+                                    @foreach (Cart::instance('cart')->content() as $item)
                                     <tr>
-                                        <td class="image product-thumbnail"><img src="{{ asset('assets/imgs/shop/product-') }}{{$item->model->id}}-2.jpg" alt="#"></td>
+                                        @php
+                                            $images = App\Models\ProductImages::where('product_slug', $item->model->slug)->take(1)->get();
+                                        @endphp
+                                        @foreach ($images as $image)
+                                            <td class="image product-thumbnail"><img src="{{ asset('assets/imgs/products') }}/{{$image->image}}" alt="#"></td>
+                                        @endforeach
                                         <td class="product-des product-name">
                                             <h5 class="product-name"><a href="product-details.html">{{$item->model->name}}</a></h5>
                                             {{-- <p class="font-xs">Maboriosam in a tonto nesciung eget<br> distingy magndapibus.
@@ -68,7 +73,7 @@
                         </div>
                         <div class="cart-action text-end">
                             <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a>
-                            <a class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+                            <a href="{{route('shop')}}" class="btn "><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
                         </div>
                         <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
                         <div class="row mb-50">
@@ -377,7 +382,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="cart_total_label">Cart Subtotal</td>
-                                                    <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">Rp.{{ Cart::subtotal() }}</span></td>
+                                                    <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">Rp.{{ Cart::instance('cart')->subtotal() }}</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="cart_total_label">Shipping</td>
@@ -386,7 +391,7 @@
                                                 <tr>
                                                     <td class="cart_total_label">Total</td>
                                                     <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">
-                                                        Rp.{{ Cart::total()}}
+                                                        Rp.{{ Cart::instance('cart')->total()}}
                                                     </span></strong></td>
                                                 </tr>
                                             </tbody>

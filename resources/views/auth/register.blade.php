@@ -75,12 +75,27 @@
                                             @csrf
                                             <div class="form-group">
                                                 <input type="text" required="" name="name" placeholder="Name" :value="old('name')" required autofocus autocomplete="name">
+                                                @error('name')
+                                                    <p class="text-danger">{{$message}}</p>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
                                                 <input type="text" required="" name="email" placeholder="Email" :value="old('email')" required>
+                                                @error('email')
+                                                    <p class="text-danger">{{$message}}</p>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="tel" required="" name="phone" placeholder="Phone Number" :value="old('phone')" required>
+                                                @error('phone')
+                                                    <p class="text-danger">{{$message}}</p>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
                                                 <input required="" type="password" name="password" placeholder="Password" required autocomplete="new-password">
+                                                @error('password')
+                                                    <p class="text-danger">{{$message}}</p>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
                                                 <input required="" type="password" name="password_confirmation" placeholder="Confirm password" required autocomplete="new-password">
@@ -92,6 +107,9 @@
                                                         <label class="form-check-label" for="exampleCheckbox12"><span>I agree to terms &amp; Policy.</span></label>
                                                     </div>
                                                 </div>
+                                                @error('checkbox')
+                                                    <p class="text-danger">{{$message}}</p>
+                                                @enderror
                                                 <a href="privacy-policy.html"><i class="fi-rs-book-alt mr-5 text-muted"></i>Lean more</a>
                                             </div>
                                             <div class="form-group">
