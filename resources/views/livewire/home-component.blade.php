@@ -115,16 +115,12 @@
                                         <div class="product-img product-img-zoom">
                                             <a href="{{route('product.details', ['slug' => $product->slug])}}">
                                                 @php
-                                                    $imageFirst = App\Models\ProductImages::where('product_slug', $product->slug)->take(1)->get();
-                                                    $imageSecond = App\Models\ProductImages::where('product_slug', $product->slug)->skip(1)->take(1)->get();
+                                                    $imageFirst = App\Models\ProductImages::where('product_slug', $product->slug)->firstOrFail();
+                                                    $imageSecond = App\Models\ProductImages::where('product_slug', $product->slug)->skip(1)->firstOrFail();
                                                 @endphp
 
-                                                @foreach ($imageFirst as $item)
-                                                    <img class="default-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
-                                                @endforeach
-                                                @foreach ($imageSecond as $item)
-                                                    <img class="hover-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
-                                                @endforeach
+                                                <img class="default-img" src="{{ asset('assets/imgs/products') }}/{{$imageFirst->image}}" alt="{{$imageFirst->name}}">
+                                                <img class="hover-img" src="{{ asset('assets/imgs/products') }}/{{$imageSecond->image}}" alt="{{$imageSecond->name}}">
                                             </a>
                                         </div>
                                         <div class="product-action-1">
@@ -800,11 +796,9 @@
                                 <figure class=" img-hover-scale overflow-hidden">
                                     @foreach ($category->products as $product)
                                         @php
-                                            $images = App\Models\ProductImages::where('product_slug', $product->slug)->take(1)->get();
+                                            $imageProduct = App\Models\ProductImages::where('product_slug', $product->slug)->firstOrFail();
                                         @endphp
-                                        @foreach ($images as $item)
-                                            <img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
-                                        @endforeach
+                                            <img src="{{ asset('assets/imgs/products') }}/{{$imageProduct->image}}" alt="{{$imageProduct->name}}">
                                     @endforeach
                                 </figure>
                                 <h5><a href="{{route('product.category', ['slug' => $category->slug])}}">{{$category->name}}</a></h5>

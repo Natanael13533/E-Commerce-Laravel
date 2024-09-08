@@ -43,7 +43,7 @@ class CategoryComponent extends Component
 
     public function render()
     {
-        $category = Category::where('slug', $this->slug)->first();
+        $category = Category::where('slug', $this->slug)->firstOrFail();
         $category_id = $category->id;
         $category_name = $category->name;
 

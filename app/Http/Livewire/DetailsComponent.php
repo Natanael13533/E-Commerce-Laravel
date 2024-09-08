@@ -14,7 +14,7 @@ class DetailsComponent extends Component
     public $slug;
 
     public $rating;
-    public $comments;
+    // public $comments;
     public $name;
     public $email;
 
@@ -22,44 +22,44 @@ class DetailsComponent extends Component
     {
         $this->slug = $slug;
 
-        if(Auth::check())
-        {
-            $user = User::findOrFail(auth()->user()->id);
-            $this->name = $user->name;
-            $this->email = $user->email;
-        }
+        // if(Auth::check())
+        // {
+        //     $user = User::findOrFail(auth()->user()->id);
+        //     $this->name = $user->name;
+        //     $this->email = $user->email;
+        // }
 
     }
 
-    public function addComment()
-    {
-        if(Auth::check())
-        {
-            $this->validate([
-                'rating' => 'required',
-                'comments' => 'required',
-                'name' => 'required',
-                'email' => 'required'
-            ]);
+    // public function addComment()
+    // {
+    //     if(Auth::check())
+    //     {
+    //         $this->validate([
+    //             'rating' => 'required',
+    //             'comments' => 'required',
+    //             'name' => 'required',
+    //             'email' => 'required'
+    //         ]);
 
-            $comment = new Comment();
+    //         $comment = new Comment();
 
-            $comment->rating = $this->rating;
-            $comment->comments = $this->comments;
-            $comment->status = 0;
-            $comment->user_id = Auth::user()->id;
+    //         $comment->rating = $this->rating;
+    //         $comment->comments = $this->comments;
+    //         $comment->status = 0;
+    //         $comment->user_id = Auth::user()->id;
 
-            $product = Product::where('slug', $this->slug)->firstOrFail();
-            $comment->product_id = $product->id;
-            // foreach ($product as $item) {
-            //     $comment->product_id = $item->id;
-            // }
+    //         $product = Product::where('slug', $this->slug)->firstOrFail();
+    //         $comment->product_id = $product->id;
+    //         // foreach ($product as $item) {
+    //         //     $comment->product_id = $item->id;
+    //         // }
 
-            $comment->save();
+    //         $comment->save();
 
-            session()->flash('message', 'Comment has been added');
-        }
-    }
+    //         session()->flash('message', 'Comment has been added');
+    //     }
+    // }
 
     public function store($product_id, $product_name, $product_price)
     {
@@ -73,6 +73,7 @@ class DetailsComponent extends Component
         $product = Product::where('slug', $this->slug)->firstOrFail();
         $rproducts = Product::where('category_id', $product->category_id)->inRandomOrder()->limit(4)->get();
         $nproducts = Product::Latest()->take(4)->get();
-        return view('livewire.details-component', ['product' => $product, 'rproducts' => $rproducts, 'nproducts' => $nproducts]);
+        $comments = Comment::where('product_id', $product->id)->get();
+        return view('livewire.details-component', ['product' => $product, 'rproducts' => $rproducts, 'nproducts' => $nproducts, 'comments' => $comments]);
     }
 }

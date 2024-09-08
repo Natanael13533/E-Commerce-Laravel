@@ -52,12 +52,11 @@
                                             <td>{{$loop->iteration + $products->firstItem() - 1}}</td>
                                             <td>
                                                 @php
-                                                    $images = App\Models\ProductImages::where('product_slug', $product->slug)->limit(1)->get();
+                                                    $images = App\Models\ProductImages::where('product_slug', $product->slug)->firstOrFail();
                                                 @endphp
 
-                                                @foreach ($images as $item)
-                                                    <img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$product->name}}" width="50" height="50" />
-                                                @endforeach
+
+                                                <img src="{{ asset('assets/imgs/products') }}/{{$images->image}}" alt="{{$images->name}}" width="50" height="50" />
                                             </td>
                                             <td>{{$product->name}}</td>
                                             <td>{{$product->stock_status}}</td>

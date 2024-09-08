@@ -62,7 +62,7 @@
                                             @endphp
 
                                             @foreach ($images as $item)
-                                                <figure wire:key="lang{{$item->id}}" class="border-radius-10">
+                                                <figure  class="border-radius-10">
                                                     <img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
                                                 </figure>
                                             @endforeach
@@ -70,7 +70,7 @@
                                         <!-- THUMBNAILS -->
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
                                             @foreach ($images as $item)
-                                                <div wire:key="lang{{$item->id}}"><img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}"></div>
+                                                <div ><img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}"></div>
                                             @endforeach
                                         </div>
                                     </div>
@@ -154,7 +154,7 @@
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
-                                            <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
+                                            <li class="mb-5">SKU: <a href="#">{{$product->SKU}}</a></li>
                                             <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
                                             <li>Availability:<span class="in-stock text-success ml-5">8 Items In Stock</span></li>
                                         </ul>
@@ -299,77 +299,54 @@
                                         <div class="comments-area">
                                             <div class="row">
                                                 <div class="col-lg-8">
-                                                    <h4 class="mb-30">Customer questions & answers</h4>
+                                                    <h4 class="mb-30">Customer reviews</h4>
                                                     <div class="comment-list">
-                                                        <div class="single-comment justify-content-between d-flex">
-                                                            <div class="user justify-content-between d-flex">
-                                                                <div class="thumb text-center">
-                                                                    <img src="{{ asset('assets/imgs/page/avatar-6.jpg') }}" alt="">
-                                                                    <h6><a href="#">Jacky Chan</a></h6>
-                                                                    <p class="font-xxs">Since 2012</p>
-                                                                </div>
-                                                                <div class="desc">
-                                                                    <div class="product-rate d-inline-block">
-                                                                        <div class="product-rating" style="width:90%">
-                                                                        </div>
+                                                        @foreach ($comments as $comment)
+                                                            <div class="single-comment justify-content-between d-flex">
+                                                                <div class="user justify-content-between d-flex">
+                                                                    <div class="thumb text-center">
+                                                                        {{-- @if (Auth::user()->image != NULL) --}}
+                                                                            <img src="{{ asset('assets/imgs/users') }}/{{$comment->user->image}}" alt="">
+                                                                        {{-- @else
+                                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                                                            class="rounded-circle img-fluid" style="width: 150px;">
+                                                                        @endif --}}
+                                                                        <h6><a href="#">{{$comment->user->name}}</a></h6>
+                                                                        {{-- <p class="font-xxs">Since 2012</p> --}}
                                                                     </div>
-                                                                    <p>Thank you very fast shipping from Poland only 3days.</p>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <p class="font-xs mr-30">December 4, 2020 at 3:12 pm </p>
-                                                                            <a href="#" class="text-brand btn-reply">Reply <i class="fi-rs-arrow-right"></i> </a>
+                                                                    <div class="desc">
+                                                                        <div class="product-rate d-inline-block">
+                                                                            @if ($comment->rating == 5)
+                                                                                <div class="product-rating" style="width:100%">
+                                                                                </div>
+                                                                            @elseif ($comment->rating == 4)
+                                                                                <div class="product-rating" style="width:80%">
+                                                                                </div>
+                                                                            @elseif ($comment->rating == 3)
+                                                                                <div class="product-rating" style="width:60%">
+                                                                                </div>
+                                                                            @elseif ($comment->rating == 2)
+                                                                                <div class="product-rating" style="width:40%">
+                                                                                </div>
+                                                                            @elseif ($comment->rating == 1)
+                                                                                <div class="product-rating" style="width:20%">
+                                                                                </div>
+                                                                            @else
+                                                                                <div class="product-rating" style="width:0%">
+                                                                                </div>
+                                                                            @endif
                                                                         </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--single-comment -->
-                                                        <div class="single-comment justify-content-between d-flex">
-                                                            <div class="user justify-content-between d-flex">
-                                                                <div class="thumb text-center">
-                                                                    <img src="{{ asset('assets/imgs/page/avatar-7.jpg') }}" alt="">
-                                                                    <h6><a href="#">Ana Rosie</a></h6>
-                                                                    <p class="font-xxs">Since 2008</p>
-                                                                </div>
-                                                                <div class="desc">
-                                                                    <div class="product-rate d-inline-block">
-                                                                        <div class="product-rating" style="width:90%">
-                                                                        </div>
-                                                                    </div>
-                                                                    <p>Great low price and works well.</p>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <p class="font-xs mr-30">December 4, 2020 at 3:12 pm </p>
-                                                                            <a href="#" class="text-brand btn-reply">Reply <i class="fi-rs-arrow-right"></i> </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--single-comment -->
-                                                        <div class="single-comment justify-content-between d-flex">
-                                                            <div class="user justify-content-between d-flex">
-                                                                <div class="thumb text-center">
-                                                                    <img src="{{ asset('assets/imgs/page/avatar-8.jpg') }}" alt="">
-                                                                    <h6><a href="#">Steven Keny</a></h6>
-                                                                    <p class="font-xxs">Since 2010</p>
-                                                                </div>
-                                                                <div class="desc">
-                                                                    <div class="product-rate d-inline-block">
-                                                                        <div class="product-rating" style="width:90%">
-                                                                        </div>
-                                                                    </div>
-                                                                    <p>Authentic and Beautiful, Love these way more than ever expected They are Great earphones</p>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <p class="font-xs mr-30">December 4, 2020 at 3:12 pm </p>
-                                                                            <a href="#" class="text-brand btn-reply">Reply <i class="fi-rs-arrow-right"></i> </a>
+                                                                        <p>{{$comment->comments}}</p>
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <p class="font-xs mr-30">{{$comment->created_at}}</p>
+                                                                                {{-- <a href="#" class="text-brand btn-reply">Reply <i class="fi-rs-arrow-right"></i> </a> --}}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <!--single-comment -->
+                                                        @endforeach
                                                     </div>
                                                 </div>
                                                 {{-- <div class="col-lg-4">
@@ -410,9 +387,14 @@
                                             @if (Session::has('message'))
                                                 <div class="alert alert-success" role="alert">{{Session::get('message')}}</div>
                                             @endif
-                                            <h4 class="mb-15">Add a review</h4>
+                                            @if (Auth::check())
+                                                @if (Auth::user()->utype == 'USR')
+                                                    <a class="mb-15" href="{{route('user.comment.add', ['slug' => $product->slug])}}">Add a review</a>
+                                                @endif
+                                            @endif
+
                                             {{-- <div class="product-rate d-inline-block mb-30">
-                                            </div> --}}
+                                            </div>
                                             <div class="row">
                                                 <div class="col-lg-8 col-md-12">
                                                     <form wire:submit.prevent="addComment">
@@ -428,40 +410,23 @@
                                                                 <label for="star2" title="text">2 stars</label>
                                                                 <input type="radio" id="star1" name="rate" value="1" wire:model="rating"/>
                                                                 <label for="star1" title="text">1 star</label>
-                                                                {{-- @error('rating')
+                                                                @error('rating')
                                                                     <p class="text-danger">{{$message}}</p>
-                                                                @enderror --}}
+                                                                @enderror
                                                             </div>
                                                             <div class="form-group col-12">
                                                                 <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment" wire:model="comments"></textarea>
-                                                                {{-- @error('comments')
-                                                                    <p class="text-danger">{{$message}}</p>
-                                                                @enderror --}}
-                                                            </div>
-                                                            {{-- <div class="form-group col-sm-6">
-                                                                <input class="form-control" name="name" id="name" type="text" placeholder="Name" wire:model="name">
-                                                                @error('name')
+                                                                @error('comments')
                                                                     <p class="text-danger">{{$message}}</p>
                                                                 @enderror
                                                             </div>
-                                                            <div class="form-group col-sm-6">
-                                                                <input class="form-control" name="email" id="email" type="email" placeholder="Email" wire:model="email">
-                                                                @error('email')
-                                                                    <p class="text-danger">{{$message}}</p>
-                                                                @enderror
-                                                            </div> --}}
-                                                            {{-- <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" name="website" id="website" type="text" placeholder="Website">
-                                                                </div>
-                                                            </div> --}}
                                                         </div>
                                                         <div class="form-group">
                                                             <button type="submit" class="button button-contactForm">Submit Review</button>
                                                         </div>
                                                     </form>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -484,10 +449,10 @@
                                                             @endphp
 
                                                             @foreach ($imageFirst as $item)
-                                                                <img wire:key="lang{{$item->id}}" class="default-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
+                                                                <img  class="default-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
                                                             @endforeach
                                                             @foreach ($imageSecond as $item)
-                                                                <img wire:key="lang{{$item->id}}" class="hover-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
+                                                                <img  class="hover-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
                                                             @endforeach
                                                         </a>
                                                     </div>
@@ -589,7 +554,7 @@
                                         $image = App\Models\ProductImages::where('product_slug', $nproduct->slug)->take(1)->get();
                                     @endphp
                                     @foreach ($image as $item)
-                                        <img wire:key="lang{{$item->id}}" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
+                                        <img  src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
                                     @endforeach
                                 </div>
                                 <div class="content pt-10">

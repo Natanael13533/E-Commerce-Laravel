@@ -17,11 +17,12 @@ use App\Http\Livewire\Admin\AdminEditProductComponent;
 use App\Http\Livewire\Admin\AdminHomeSliderComponent;
 use App\Http\Livewire\Admin\AdminProductComponent;
 use App\Http\Livewire\CategoryComponent;
-use App\Http\Livewire\CommentComponent;
 use App\Http\Livewire\DetailsComponent;
-use App\Http\Livewire\EditCommentComponent;
 use App\Http\Livewire\SearchComponent;
+use App\Http\Livewire\User\UserAddCommentComponent;
+use App\Http\Livewire\User\UserCommentComponent;
 use App\Http\Livewire\User\UserDashboardComponent;
+use App\Http\Livewire\User\UserEditCommentComponent;
 use App\Http\Livewire\User\UserEditProfileComponent;
 use App\Http\Livewire\User\UserProfileComponent;
 use App\Http\Livewire\WishlistComponent;
@@ -66,8 +67,9 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/user/dashboard', UserDashboardComponent::class)->name('user.dashboard');
     Route::get('/user/profile', UserProfileComponent::class)->name('user.profile');
     Route::get('/user/profile/edit', UserEditProfileComponent::class)->name('user.profile.edit');
-    Route::get('/user/comment', CommentComponent::class)->name('user.comment');
-    Route::get('/user/omment/edit/{comment_id}', EditCommentComponent::class)->name('user.comment.edit');
+    Route::get('/user/comment', UserCommentComponent::class)->name('user.comment');
+    Route::get('/user/comment/add/{slug}', UserAddCommentComponent::class)->name('user.comment.add');
+    Route::get('/user/comment/edit/{comment_id}', UserEditCommentComponent::class)->name('user.comment.edit');
 });
 
 Route::middleware(['auth', 'authadmin'])->group(function() {

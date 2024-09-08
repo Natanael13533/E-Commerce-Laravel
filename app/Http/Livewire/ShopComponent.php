@@ -25,7 +25,7 @@ class ShopComponent extends Component
         Cart::instance('cart')->add($product_id,$product_name,1,$product_price)->associate('\App\Models\Product');
         session()->flash('success_message', 'Item added in cart');
         $this->emitTo('cart-icon-component', 'refreshComponent');
-        return redirect()->route('shop.cart');
+        // return redirect()->route('shop.cart');
     }
 
     public function changePageSize($size)
@@ -65,7 +65,7 @@ class ShopComponent extends Component
         {
             $products = Product::whereBetween('regular_price', [$this->min_value, $this->max_value])->orderBy('regular_price', 'DESC')->paginate($this->pageSize);
         }
-        elseif ($this->orderBy == 'Sort by New')
+        else if($this->orderBy == 'Sort by New')
         {
             $products = Product::whereBetween('regular_price', [$this->min_value, $this->max_value])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         }

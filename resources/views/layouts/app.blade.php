@@ -3,19 +3,19 @@
 
 <head>
     <meta charset="utf-8">
-<title>Surfside Media</title>
-<meta http-equiv="x-ua-compatible" content="ie=edge">
-<meta name="description" content="">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:title" content="">
-<meta property="og:type" content="">
-<meta property="og:url" content="">
-<meta property="og:image" content="">
-<link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/imgs/theme/favicon.ico') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-@livewireStyles
+    <title>Natan Store</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/imgs/theme/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    @livewireStyles
 </head>
 
 <body>
@@ -73,7 +73,7 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="{{route('home.index')}}"><img src="{{asset('assets/imgs/logo/logo.png')}}" alt="logo"></a>
+                        <a href="{{route('home.index')}}"><img src="{{asset('assets/imgs/logo/logo-2.png')}}" alt="logo"></a>
                     </div>
                     <div class="header-right">
                         @livewire('header-search-component')
@@ -113,7 +113,7 @@
                                                             <ul>
                                                                 <li><span class="submenu-title">Hot & Trending</span></li>
                                                                 @foreach ($categories as $category)
-                                                                    <li><a class="dropdown-item nav-link nav_item" href="#">{{$category->name}}</a></li>
+                                                                    <li><a class="dropdown-item nav-link nav_item" href="{{route('product.category', ['slug' => $category->slug])}}">{{$category->name}}</a></li>
                                                                 @endforeach
                                                             </ul>
                                                         </li>
@@ -354,7 +354,7 @@
                                                 <ul class="sub-menu">
                                                     <li><a href="{{ route('user.dashboard') }}">Dashboard</a></li>
                                                     <li><a href="{{ route('user.profile') }}">Profile</a></li>
-                                                    <li><a href="{{ route('user.comment') }}">Profile</a></li>
+                                                    <li><a href="{{ route('user.comment') }}">Comment</a></li>
                                                 </ul>
                                             @endif
                                         </li>
@@ -576,7 +576,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="widget-about font-md mb-md-5 mb-lg-0">
                             <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="index.html"><img src="assets/imgs/logo/logo.png" alt="logo"></a>
+                                <a href="{{route('home.index')}}"><img src="{{asset('assets/imgs/logo/logo.png')}}" alt="logo"></a>
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">

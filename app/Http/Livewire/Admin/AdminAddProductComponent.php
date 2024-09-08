@@ -57,12 +57,13 @@ class AdminAddProductComponent extends Component
         $product->description = $this->description;
         $product->regular_price = $this->regular_price;
         $product->sale_price = $this->sale_price;
-        $product->sku = $this->sku;
+        $product->SKU = $this->sku;
         $product->stock_status = $this->stock_status;
         $product->featured = $this->featured;
         $product->quantity = $this->quantity;
 
         foreach ($this->images as $key => $image) {
+            // dd("Before loop iteration: $key", $image, $this->images);
             $pimage = new ProductImages();
             $pimage->product_slug = $this->slug;
 
@@ -71,6 +72,7 @@ class AdminAddProductComponent extends Component
             $pimage->image = $imageName;
 
             $pimage->save();
+            // dd("After loop iteration: $key", $image, $this->images);
         }
 
         // $imageName = Carbon::now()->timestamp.'.'.$this->image->extension();

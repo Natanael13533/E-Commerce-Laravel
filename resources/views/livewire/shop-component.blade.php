@@ -18,7 +18,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
+                    <a href="{{route('home.index')}}" rel="nofollow">Home</a>
                     <span></span> Shop
                 </div>
             </div>
@@ -81,16 +81,12 @@
                                         <div class="product-img product-img-zoom">
                                             <a href="{{route('product.details', ['slug' => $product->slug])}}">
                                                 @php
-                                                    $imageFirst = App\Models\ProductImages::where('product_slug', $product->slug)->take(1)->get();
-                                                    $imageSecond = App\Models\ProductImages::where('product_slug', $product->slug)->skip(1)->take(1)->get();
+                                                    $imageFirst = App\Models\ProductImages::where('product_slug', $product->slug)->firstOrFail();
+                                                    $imageSecond = App\Models\ProductImages::where('product_slug', $product->slug)->skip(1)->firstOrFail();
                                                 @endphp
 
-                                                @foreach ($imageFirst as $item)
-                                                    <img class="default-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
-                                                @endforeach
-                                                @foreach ($imageSecond as $item)
-                                                    <img class="hover-img" src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
-                                                @endforeach
+                                                <img class="default-img" src="{{ asset('assets/imgs/products') }}/{{$imageFirst->image}}" alt="{{$imageFirst->name}}">
+                                                <img class="hover-img" src="{{ asset('assets/imgs/products') }}/{{$imageSecond->image}}" alt="{{$imageSecond->name}}">
 
                                                 {{-- <img class="default-img" src="{{ asset('assets/imgs/products') }}/{{$product->image}}" alt="{{$product->name}}">
                                                 <img class="hover-img" src="{{ asset('assets/imgs/shop/product-') }}{{$product->id}}-2.jpg" alt="{{$product->name}}"> --}}
@@ -111,11 +107,40 @@
                                             <a href="shop.html">Music</a>
                                         </div>
                                         <h2><a href="{{route('product.details', ['slug' => $product->slug])}}">{{$product->name}}</a></h2>
-                                        <div class="rating-result" title="90%">
-                                            <span>
-                                                <span>90%</span>
-                                            </span>
-                                        </div>
+                                        @php
+                                            $comment = App\Models\Comment::where('product_id', $product->id)->avg('rating');
+                                        @endphp
+                                        @if ($comment == 5)
+                                            <div class="rating-result" title="100%">
+                                                <span>
+                                                    <span>100%</span>
+                                                </span>
+                                            </div>
+                                        @elseif ($comment == 4)
+                                            <div class="rating-result" title="80%">
+                                                <span>
+                                                    <span>80%</span>
+                                                </span>
+                                            </div>
+                                        @elseif ($comment = 3)
+                                            <div class="rating-result" title="60%">
+                                                <span>
+                                                    <span>60%</span>
+                                                </span>
+                                            </div>
+                                        @elseif ($comment == 2)
+                                            <div class="rating-result" title="40%">
+                                                <span>
+                                                    <span>40%</span>
+                                                </span>
+                                            </div>
+                                        @elseif ($comment == 1)
+                                            <div class="rating-result" title="20%">
+                                                <span>
+                                                    <span>20%</span>
+                                                </span>
+                                            </div>
+                                        @endif
                                         <div class="product-price">
                                             <span>Rp.{{ number_format($product->regular_price,2,',','.')}} </span>
                                             {{-- <span class="old-price">$245.8</span> --}}
@@ -206,11 +231,11 @@
                                 <div class="single-post clearfix">
                                     <div class="image">
                                         @php
-                                            $image = App\Models\ProductImages::where('product_slug', $nproduct->slug)->take(1)->get();
+                                            $imageNew = App\Models\ProductImages::where('product_slug', $nproduct->slug)->firstOrFail();
                                         @endphp
-                                        @foreach ($image as $item)
-                                            <img src="{{ asset('assets/imgs/products') }}/{{$item->image}}" alt="{{$item->name}}">
-                                        @endforeach
+
+                                        <img src="{{ asset('assets/imgs/products') }}/{{$imageNew->image}}" alt="{{$imageNew->name}}">
+
                                     </div>
                                     <div class="content pt-10">
                                         <h5><a href="{{route('product.details', ['slug' => $nproduct->slug])}}">{{$nproduct->name}}</a></h5>

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\User;
 
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -35,8 +36,7 @@ class UserEditProfileComponent extends Component
             'name' => 'required',
             'email' => 'required',
             'phone' => 'required',
-            'address' => 'required',
-            'image' => 'required'
+            'address' => 'required'
         ]);
 
         $user = User::findOrFail(auth()->user()->id);
@@ -48,7 +48,11 @@ class UserEditProfileComponent extends Component
 
         if ($this->newImage)
         {
-            unlink('assets/imgs/users/'.$user->image);
+            $file_path = 'assets/imgs/users/' . $user->image;
+            if (File::exists($file_path)) {
+                unlink($file_path);
+                // File::delete($file_path);
+            }
             $imageName = Carbon::now()->timestamp.'.'.$this->newImage->extension();
             $this->newImage->storeAs('users', $imageName);
             $user->image = $imageName;
